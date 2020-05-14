@@ -14,7 +14,7 @@ export class NewActivityCommand implements Command {
 	async execute(): Promise<void> {
 		const title = await this.window.showInputBox({
 			value: 'MainActivity',
-			valueSelection: [0, 20],
+			prompt: 'Please provide an Activity name',
 			placeHolder: 'Activity Name'
 		});
 
