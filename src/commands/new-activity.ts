@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
-import ExtensionProperties from '../init';
+import ExtensionProperties from '../properties';
 import { Command } from './commands.interface';
 import { VSCodeWindow } from '../vscode.interfaces';
 import { IAndroid } from '../android';
 
-export class NewActivity implements Command {
+export class NewActivityCommand implements Command {
 	constructor(
 		private window: VSCodeWindow,
 		private properties: ExtensionProperties,
@@ -21,15 +21,12 @@ export class NewActivity implements Command {
 		if (!title) {
 			return;
 		}
+
 		const basePath = vscode.Uri.parse(this.properties.workspacePath);
-		const activityPath = vscode.Uri.joinPath(basePath, `app/src/main/java`, ...this.properties.package.split('.'));
+		const activityPath = vscode.Uri.joinPath(basePath, `app/src/main/java`, ...this.properties.getPackageName().split('.'));
 		const layoutPath = vscode.Uri.joinPath(basePath, 'app/src/main/res/layout');
-
-		await this.android.createActivity(activityPath.fsPath, this.properties.package, title);
-		await this.android.createLayout(layoutPath.fsPath,this.properties.package, title);
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from android-tools!');
+		await this.android.createActivity(activityPath.fsPath, this.properties.getPackageName(), title, this.properties.manifest);
+		await this.android.createLayout(layoutPath.fsPath,this.properties.getPackageName(), title);
 
 	}
 

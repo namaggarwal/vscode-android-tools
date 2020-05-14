@@ -1,5 +1,3 @@
-module android {
-  export class Layout {
+  export default class Layout {
     constructor(private path: string){}
   }
-}
